@@ -22,7 +22,7 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     var ourName: String!
     var day = "Понедельник"
     
-    ////////////////////////Spinner/////////////////////
+    ////////////////////////Spinner for waiting answer/////////////////////
     class func displaySpinner(onView : UIView) -> UIView {
         let spinnerView = UIView.init(frame: onView.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
@@ -43,9 +43,9 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
             spinner.removeFromSuperview()
         }
     }
-    /////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     
-    
+    ////////////////////////Day of the week//////////////////////////////
     func weekDay(_ dayWeek:Int) -> String{
         switch dayWeek {
         case 2:
@@ -62,13 +62,12 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
             return "Понедельник"
         }
     }
+    /////////////////////////////////////////////////////////////////////
     
     override func viewDidLoad() {
-        print("/////",UserDefaults.standard.string(forKey: "login"),"\t",UserDefaults.standard.string(forKey: "name"),"/////")
         super.viewDidLoad()
         let weekday = Calendar.current.component(.weekday, from: Date())
         day = "\(weekDay(weekday))"
-        print("\(weekDay(weekday)) ")
         loadBar = ViewController.displaySpinner(onView: self.view)
         
         // Configure Google Sign-in.
@@ -79,8 +78,8 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
         
     }
     
+    ////////////////////////Sign In//////////////////////////////
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-
         if let error = error {
             ViewController.removeSpinner(spinner: loadBar)
             showAlert(title: "Authentication Error", message: error.localizedDescription)
@@ -90,16 +89,18 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
             self.service.authorizer = user.authentication.fetcherAuthorizer()
             foodMenu()
             ourName = UserDefaults.standard.string(forKey: "name")
-//            print(ourName)
         }
     }
+    /////////////////////////////////////////////////////////////////////
     
+    ////////////////////////updating data//////////////////////////////
     @IBAction func reload(_ sender: Any) {
         if(nameInput.text != ""){
             ourName = nameInput.text
         }
         foodMenu()
     }
+    /////////////////////////////////////////////////////////////////////
     
     ///////////////////////sheet data/////////////////////
     func foodMenu() {
@@ -179,8 +180,9 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
         
         
     }
-    /////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     
+    ///////////////////////name changes/////////////////////
     @IBOutlet weak var newName: UITextField!
     @IBAction func specifyName(_ sender: Any) {
         if(!(newName.text?.isEmpty)!){
@@ -190,11 +192,13 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
         let main = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
         appDeligate?.window?.rootViewController = main
     }
+    //////////////////////////////////////////////////////
     
+    ///////////////////////Сhange Day/////////////////////
     @IBAction func changeDay(_ sender: UIButton) {
         let dayBut = sender.currentTitle
         day = dayBut!
         foodMenu()
     }
-    
+    //////////////////////////////////////////////////////
 }

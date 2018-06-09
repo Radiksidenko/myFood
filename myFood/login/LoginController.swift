@@ -19,8 +19,8 @@ import GoogleSignIn
 import UIKit
 
 class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
-    private let scopes = [kGTLRAuthScopeSheetsSpreadsheetsReadonly]
     
+    private let scopes = [kGTLRAuthScopeSheetsSpreadsheetsReadonly]
     @IBOutlet weak var nameUser: UITextField!
     private let service = GTLRSheetsService()
     let signInButton = GIDSignInButton()
@@ -40,13 +40,12 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate 
         
         // Add a UITextView to display output.
         signInButton.frame = view.bounds
-        signInButton.frame = CGRect(origin: CGPoint(x: (UIScreen.main.bounds.width/2)-50,y : UIScreen.main.bounds.height/2), size: CGSize(width: 70, height: 100)) //UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        signInButton.frame = CGRect(origin: CGPoint(x: (UIScreen.main.bounds.width/2)-50,y : UIScreen.main.bounds.height/2), size: CGSize(width: 70, height: 100))
         signInButton.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
     
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-              withError error: Error!) {
+    ////////////////////////Sign In/////////////////////////////////////
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
             showAlert(title: "Authentication Error", message: error.localizedDescription)
             self.service.authorizer = nil
@@ -67,12 +66,15 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate 
             showListPage()
         }
     }
+    /////////////////////////////////////////////////////////////////////
     
+    ////////////////////////Go to main page/////////////////////////////////////
     func showListPage(){
         let appDeligate = UIApplication.shared.delegate as? AppDelegate
         let main = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
         appDeligate?.window?.rootViewController = main
     }
+    /////////////////////////////////////////////////////////////////////
     
     ///////////////////////window alert/////////////////////
     func showAlert(title : String, message: String) {
@@ -89,7 +91,8 @@ class LoginController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate 
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
-    /////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    
     ///////////////////keyBoard/////////////////////////
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
